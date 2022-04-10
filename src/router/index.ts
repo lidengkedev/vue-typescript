@@ -1,11 +1,48 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/home.vue'
+import Login from '../views/login.vue'
+import Loayout from '../layout/default.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    redirect: '/home',
+    component: Loayout,
+    children: [
+      {
+        path: '/home',
+        component: () => import('../views/home.vue'),
+        meta: { title: '首页' }
+      }, {
+        path: '/user/list',
+        component: () => import('../views/user/user-list.vue'),
+        meta: { title: '用户列表', hidden: false, aside: true }
+      }
+    ]
+  },
+  {
+    path: '/product',
+    name: 'Product',
+    component: Loayout,
+    meta: { title: '商品', hidden: false, aside: false },
+    children: [
+      {
+        path: '/product/list',
+        component: () => import('../views/product/product-list.vue'),
+        meta: { title: '商品列表', hidden: false, aside: true }
+      },
+      {
+        path: '/product/order',
+        component: () => import('../views/product/product-order.vue'),
+        meta: { title: '商品订单', hidden: false, aside: true }
+      }
+    ]
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   {
     path: '/about',
