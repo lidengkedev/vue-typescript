@@ -10,7 +10,7 @@ enum MESSAGE {
 }
 
 const options = {
-    baseURL: 'https://www.fastmock.site/mock/7db20e364e5e0d783e8a7b4ac7b033a1/api',
+    baseURL: process.env.VUE_APP_SERVER_BASE,
     timeout: 60000,
     headers: {
         'Content-Type': 'application/json;charset=utf-8'
