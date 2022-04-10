@@ -8,5 +8,6 @@ module.exports = {
   devServer: {
     host,
     port
-  }
+  },
+  publicPath: process.env.VUE_APP_WEBSITE_BASE
 }
