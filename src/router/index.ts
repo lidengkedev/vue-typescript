@@ -55,8 +55,8 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+  history: createWebHistory(process.env.VUE_APP_WEBSITE_BASE),
+  routes,
 })
 
 export default router

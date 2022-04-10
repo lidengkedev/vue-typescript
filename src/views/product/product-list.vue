@@ -32,7 +32,7 @@
 <script>
 import { defineComponent, onMounted, reactive, toRefs } from 'vue'
 import { Search } from '@element-plus/icons-vue'
-import { InitPage } from '../../types/product-list'
+import { InitPage } from '../../types/product'
 import { getProductList } from '@/api/product'
 
 export default defineComponent({

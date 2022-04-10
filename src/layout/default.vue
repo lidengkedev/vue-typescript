@@ -19,7 +19,7 @@
       <el-aside width="200px">
         <el-menu
           router
-          default-active="1"
+          :default-active="defaultActive"
           text-color="#fff"
           active-text-color="#ffd04b"
           background-color="#545c64"
@@ -48,18 +48,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
+import { computed, defineComponent } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   setup() {
     const router = useRouter();
+    const route = useRoute()
+    const defaultActive = computed(() => route.path)
+    
     const menuList = router.getRoutes().filter((item) => item.meta.aside);
+    console.log(menuList)
     const handleLogout = () => {
       router.push("/login");
     };
     return {
       menuList,
+      defaultActive,
       handleLogout,
     };
   },

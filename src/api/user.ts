@@ -17,3 +17,25 @@ export function login(data: loginParams) {
         data
     })
 }
+/**
+ * 获取用户列表
+ * @param data 
+ * @returns 
+ */
+export function getUserList() {
+    return request({
+        url: '/user/list',
+        method: 'get'
+    })
+}
+/**
+ * 获取用户角色
+ * @param data 
+ * @returns 
+ */
+export function getUserRoles() {
+    return request({
+        url: '/user/roles',
+        method: 'get'
+    })
+}
