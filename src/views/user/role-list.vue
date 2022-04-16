@@ -1,7 +1,7 @@
 <template>
     <div class="action-warpper">
         <el-button type="primary" class="add-btn" @click="handleAdd">
-            <el-icon size="16"><CirclePlus/></el-icon>
+            <el-icon :size="24"><CirclePlus/></el-icon>
         </el-button>
     </div>
     <el-table :data="roleList" border height="76vh" size="small" highlight-current-row empty-text="暂无数据">
@@ -11,10 +11,10 @@
         <el-table-column prop="" label="操作" width="200px" align="center">
             <template #default="{row, $index}">
                 <el-button type="danger" size="small" @click="handleDelete($index)">
-                    <el-icon size="14"><Delete/></el-icon>
+                    <el-icon :size="16"><Delete/></el-icon>
                 </el-button>
                 <el-button type="success" size="small" @click="handleAuthority(row)">
-                    <el-icon><Checked /></el-icon>
+                    <el-icon :size="16"><Checked /></el-icon>
                 </el-button>
             </template>
         </el-table-column>
@@ -62,13 +62,9 @@ export default defineComponent({
 
         let treeRef = ref<InstanceType<typeof ElTree>>()
 
-        onMounted(() => {
-            getUserRoles().then(res => {
-                data.roleList = res.data
-            })
-            getUserAuthority().then(res => {
-                authority.authorityList = res.data
-            })
+        onMounted(async () => {
+            data.roleList = (await getUserRoles()).data
+            authority.authorityList = (await getUserAuthority()).data
         })
 
         const handleDelete = (index: number) => {

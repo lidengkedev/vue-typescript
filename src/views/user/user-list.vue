@@ -38,8 +38,12 @@
         </el-table-column>
         <el-table-column prop="" label="操作" width="150px" align="center">
             <template #default="{row, $index}">
-                <el-button type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
-                <el-button type="danger" size="small" @click="handleDelete($index)">删除</el-button>
+                <el-button type="primary" size="small" @click="handleEdit(row)">
+                    <el-icon :size="16"><Edit/></el-icon>
+                </el-button>
+                <el-button type="danger" size="small" @click="handleDelete($index)">
+                    <el-icon :size="16"><Delete/></el-icon>
+                </el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -75,26 +79,29 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
-import { Search } from '@element-plus/icons-vue'
+import { Search, Delete, Edit } from '@element-plus/icons-vue'
 import { IFormData, InitPage, IRoles, IUserList } from '../../types/user'
 import { getUserList, getUserRoles } from '@/api/user'
 import { ElMessage } from 'element-plus/lib/components'
+import { IRole } from '@/types/role'
 
 export default defineComponent({
     components: {
-        Search
+        Search,
+        Delete,
+        Edit
     },
     setup() {
         const data = reactive(new InitPage())
         let userListAll: [IUserList][] = []
         onMounted(async () => {
-            const { data } = await getUserList()
-            data.userList = data.list
-            userListAll = data.list
-            data.roles = await getUserRoles()
+            const { data: { list } } = (await getUserList())
+            data.userList = list
+            userListAll = list
+            data.roles = (await getUserRoles()).data
         })
         const handleSearch = () => {
-            const { username, phone } = data.search
+            const { username, phone, role } = data.search
             let userList = userListAll.map(item => item)
             if (username) {
                 userList = userList.filter(item => (item as any).username.includes(username))
@@ -102,10 +109,10 @@ export default defineComponent({
             if (phone) {
                 userList = userList.filter(item => (item as any).phone.includes(phone))
             }
+            if (role !== 0) {
+                userList = userList.filter(item => (item as any).roles.map((v: IRole) => v.roleId).includes(role))
+            }
             data.userList = userList
-        }
-        const handleRole = (row: {}) => {
-            
         }
         const handleSubmit = () => {
             ElMessage.success('success')
@@ -122,7 +129,6 @@ export default defineComponent({
         return {
             ...toRefs(data),
             handleSearch,
-            handleRole,
             handleEdit,
             handleDelete,
             handleSubmit

@@ -16,7 +16,7 @@
         <el-table-column prop="userId" label="用户ID" align="center" width="80px"></el-table-column>
         <el-table-column prop="id" label="商品ID" align="center" width="80px"></el-table-column>
         <el-table-column prop="title" label="商品标题" align="center"></el-table-column>
-        <el-table-column prop="body" label="商品详情" align="center"></el-table-column>
+        <el-table-column prop="body" label="商品详情" align="center" show-overflow-tooltip></el-table-column>
     </el-table>
     <el-pagination
         v-model:currentPage="page.page"
@@ -43,7 +43,7 @@ export default defineComponent({
         const data = reactive(new InitPage)
         let productListAll = []
         onMounted(async () => {
-            const { list } = await getProductList()
+            const { data: { list } } = await getProductList()
             productListAll = list
             data.page.total = list.length
             setTablePage(list)
