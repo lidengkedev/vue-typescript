@@ -8,6 +8,7 @@
         </el-form-item>
         <el-form-item label="角色：">
             <el-select v-model="search.role" placeholder="请选择角色">
+                <el-option label="全部" :value="0"></el-option>
                 <el-option
                     v-for="(item, index) in roles"
                     :key="index"
@@ -35,42 +36,96 @@
                     type="text">{{ item.roleName }}</el-button>
             </template>
         </el-table-column>
+        <el-table-column prop="" label="操作" width="150px" align="center">
+            <template #default="{row, $index}">
+                <el-button type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
+                <el-button type="danger" size="small" @click="handleDelete($index)">删除</el-button>
+            </template>
+        </el-table-column>
     </el-table>
+    <el-dialog v-model="is_show_dialog" title="角色">
+        <el-form :mode="form" label-width="100px">
+            <el-form-item label="用户名：">
+                <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
+            </el-form-item>
+            <el-form-item label="手机号：">
+                <el-input v-model="form.phone" placeholder="请输入手机号"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱：">
+                <el-input v-model="form.email" placeholder="请输入邮箱"></el-input>
+            </el-form-item>
+            <el-form-item label="角色：">
+                <el-select v-model="form.roles" multiple placeholder="请选择角色" style="width: 100%">
+                    <el-option
+                        v-for="(item, index) in roles"
+                        :key="index"
+                        :value="item.roleId"
+                        :label="item.roleName"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="is_show_dialog = false">取消</el-button>
+                <el-button type="primary" @click="handleSubmit">确认</el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
 import { Search } from '@element-plus/icons-vue'
-import { InitPage } from '../../types/user'
+import { IFormData, InitPage, IRoles, IUserList } from '../../types/user'
 import { getUserList, getUserRoles } from '@/api/user'
+import { ElMessage } from 'element-plus/lib/components'
 
 export default defineComponent({
     components: {
         Search
     },
     setup() {
-        const data = reactive(new InitPage)
-        let userListAll = []
+        const data = reactive(new InitPage())
+        let userListAll: [IUserList][] = []
         onMounted(async () => {
-            const { list } = await getUserList()
-            data.userList = list.map(item => item)
-            userListAll = list
+            const { data } = await getUserList()
+            data.userList = data.list
+            userListAll = data.list
             data.roles = await getUserRoles()
         })
         const handleSearch = () => {
             const { username, phone } = data.search
             let userList = userListAll.map(item => item)
             if (username) {
-                userList = userList.filter(item => item.username.includes(username))
+                userList = userList.filter(item => (item as any).username.includes(username))
             }
             if (phone) {
-                userList = userList.filter(item => item.phone.includes(phone))
+                userList = userList.filter(item => (item as any).phone.includes(phone))
             }
             data.userList = userList
         }
+        const handleRole = (row: {}) => {
+            
+        }
+        const handleSubmit = () => {
+            ElMessage.success('success')
+        }
+        const handleEdit = (row: IFormData) => {
+            data.form = Object.assign({}, row)
+            data.form.roles = row.roles.map(item => (item as any).roleId)
+            console.log(data.form)
+            data.is_show_dialog = true
+        }
+        const handleDelete = (index: number) => {
+            data.userList.splice(index, 1)
+        }
         return {
             ...toRefs(data),
-            handleSearch
+            handleSearch,
+            handleRole,
+            handleEdit,
+            handleDelete,
+            handleSubmit
         }
     },
 })

@@ -19,7 +19,6 @@ export function login(data: loginParams) {
 }
 /**
  * 获取用户列表
- * @param data 
  * @returns 
  */
 export function getUserList() {
@@ -30,12 +29,21 @@ export function getUserList() {
 }
 /**
  * 获取用户角色
- * @param data 
  * @returns 
  */
 export function getUserRoles() {
     return request({
         url: '/user/roles',
+        method: 'get'
+    })
+}
+/**
+ * 获取用户权限
+ * @returns 
+ */
+export function getUserAuthority() {
+    return request({
+        url: '/user/authority',
         method: 'get'
     })
 }

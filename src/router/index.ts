@@ -18,6 +18,10 @@ const routes: Array<RouteRecordRaw> = [
         path: '/user/list',
         component: () => import('../views/user/user-list.vue'),
         meta: { title: '用户列表', hidden: false, aside: true }
+      }, {
+        path: '/role/list',
+        component: () => import('../views/user/role-list.vue'),
+        meta: { title: '角色列表', hidden: false, aside: true }
       }
     ]
   },
@@ -31,11 +35,6 @@ const routes: Array<RouteRecordRaw> = [
         path: '/product/list',
         component: () => import('../views/product/product-list.vue'),
         meta: { title: '商品列表', hidden: false, aside: true }
-      },
-      {
-        path: '/product/order',
-        component: () => import('../views/product/product-order.vue'),
-        meta: { title: '商品订单', hidden: false, aside: true }
       }
     ]
   },

@@ -9,7 +9,7 @@ export interface IUserList {
     city: string
     county: string
     region: string
-    roles: []
+    roles: number[] | string[]
 }
 export interface IUserSearchParams {
     username: string
@@ -20,15 +20,28 @@ export interface IUserSearchParams {
 export interface IRoles {
     roleId: number
     roleName: string
-    suthorty: number[]
+    authority: number[]
+}
+export interface IFormData {
+    username: string
+    phone: number
+    email: string
+    roles: number[]
 }
 
 export class InitPage {
-    userList: IUserList[] = []
+    userList: [IUserList][] = []
     search: IUserSearchParams = {
         username: '',
         phone: '',
         role: 0
     }
     roles: IRoles[] = []
+    is_show_dialog: boolean = false
+    form: IFormData = {
+        username: '',
+        phone: 0,
+        email: '',
+        roles: [] = []
+    }
 }
