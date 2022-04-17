@@ -11,5 +11,5 @@ export class InitForm {
     username: '',
     password: ''
   }
-  ref = ref<FormInstance>()
+  loginFormRef = ref<FormInstance>()
 }

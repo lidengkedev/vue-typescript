@@ -1,13 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/home.vue'
-import Login from '../views/login.vue'
 import Loayout from '../layout/default.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/home',
+    redirect: '/product/list',
     component: Loayout,
     children: [
       {
@@ -41,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: import('../views/login.vue'),
   },
   {
     path: '/about',

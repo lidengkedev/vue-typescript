@@ -9,6 +9,8 @@ import 'element-plus/dist/index.css'
 
 import './assets/scss/index.scss'
 
+import './permission'
+
 createApp(App)
     .use(store)
     .use(router)

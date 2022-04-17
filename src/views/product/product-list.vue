@@ -12,7 +12,7 @@
             </el-button>
         </el-form-item>
     </el-form>
-    <el-table :data="productList" border height="72vh" size="small" highlight-current-row empty-text="暂无数据">
+    <el-table :data="productList" border height="70vh" size="small" highlight-current-row empty-text="暂无数据">
         <el-table-column prop="userId" label="用户ID" align="center" width="80px"></el-table-column>
         <el-table-column prop="id" label="商品ID" align="center" width="80px"></el-table-column>
         <el-table-column prop="title" label="商品标题" align="center"></el-table-column>
