@@ -4,8 +4,8 @@
       <el-row :gutter="20">
         <el-col :span="4">
           <el-button type="text" @click="is_menu_open = !is_menu_open">
-            <el-icon v-if="is_menu_open" :size="24" color="#FFFFFF"><fold /></el-icon>
-            <el-icon v-else :size="24" color="#FFFFFF"><expand /></el-icon>
+            <el-icon v-if="is_menu_open" :size="24" color="#FFFFFF"><expand /></el-icon>
+            <el-icon v-else :size="24" color="#FFFFFF"><fold /></el-icon>
           </el-button>
         </el-col>
         <el-col :span="16">
