@@ -1,6 +1,8 @@
 <template>
     <div class="action-warpper">
         <el-button type="primary" class="add-btn" @click="handleAdd">
+        <!-- <el-button :disabled="hasPermission('role:add')" type="primary" class="add-btn" @click="handleAdd"> -->
+        <!-- <el-button v-permission="'role:add'" type="primary" class="add-btn" @click="handleAdd"> -->
             <el-icon :size="24"><CirclePlus/></el-icon>
         </el-button>
     </div>
@@ -10,10 +12,14 @@
         <el-table-column prop="roleName" label="角色名称" align="center"></el-table-column>
         <el-table-column prop="" label="操作" width="200px" align="center">
             <template #default="{row, $index}">
-                <el-button type="danger" size="small" @click="handleDelete($index)">
+                <!-- <el-button type="danger" size="small" @click="handleDelete($index)"> -->
+                <!-- <el-button v-permission="'role:delete'" type="danger" size="small" @click="handleDelete($index)"> -->
+                <el-button :disabled="hasPermission('role:delete')" type="danger" size="small" @click="handleDelete($index)">
                     <el-icon :size="16"><Delete/></el-icon>
                 </el-button>
-                <el-button type="success" size="small" @click="handleAuthority(row)">
+                <!-- <el-button type="success" size="small" @click="handleAuthority(row)"> -->
+                <!-- <el-button v-permission="'role:auth'" type="success" size="small" @click="handleAuthority(row)"> -->
+                <el-button :disabled="hasPermission('role:auth')" type="success" size="small" @click="handleAuthority(row)">
                     <el-icon :size="16"><Checked /></el-icon>
                 </el-button>
             </template>
@@ -43,12 +49,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, onMounted, reactive, ref, toRefs } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, reactive, ref, toRefs } from 'vue'
 import type { ElTree } from 'element-plus'
 import { CirclePlus, Delete, Checked } from '@element-plus/icons-vue'
 import { getUserAuthority, getUserRoles } from '@/api/user'
 import { AuthorityList, InitPage } from '@/types/role'
 import { ElMessage } from 'element-plus/lib/components'
+import { useStore } from 'vuex'
 
 export default defineComponent({
     components: {
@@ -57,6 +64,16 @@ export default defineComponent({
         Checked
     },
     setup() {
+        const store = useStore()
+        // const authCodeList: Array<string> = computed(() => store.state.permission.authCodeList) || ['role:add']
+        // const authCodeList: Array<string> = computed(() => store.getters.authCodeList) || []
+        // const authCodeList: [] = store.dispatch('permission/getPermission')
+        const authCodeList: string[] = ['role:add']
+
+        const hasPermission = (authCode: string) => {
+            return !(authCodeList.length > 0 && authCodeList.includes(authCode)) 
+        }
+
         const data = reactive(new InitPage())
         const authority = reactive(new AuthorityList([]))
 
@@ -97,6 +114,8 @@ export default defineComponent({
             ...toRefs(data),
             ...toRefs(authority),
             treeRef,
+            authCodeList,
+            hasPermission,
             handleDelete,
             handleAdd,
             handleAddForm,
